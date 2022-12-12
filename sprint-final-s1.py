@@ -1,5 +1,5 @@
 '''
-def Menu():
+def menu():
     print()
     print("HAB Taxi Services")
     print("Company Services System")
@@ -41,4 +41,3 @@ def Menu():
         else:
             print('Please enter a valid choice')
 '''
-
