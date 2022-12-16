@@ -1,4 +1,4 @@
-global defaultread,defaultlines,transnum,nextdrivernum,MONTHSTANDFEE,DAILYFEE,WEEKLYFEE,HST_RATE
+global transnum,nextdrivernum,MONTHSTANDFEE,DAILYFEE,WEEKLYFEE,HST_RATE
 defaultread = open('Defaults.dat')
 defaultlines = defaultread.readlines()
 transnum = defaultlines[0]
@@ -16,6 +16,15 @@ def replace_line(file_name, line_num, text):
     out = open(file_name, 'w')
     out.writelines(lines)
     out.close()
+def NewEmpMenu():
+    while True:
+        global nextdrivernum
+        empfileread = open('employees.dat', 'a')
+        driver_num = nextdrivernum
+        nextdrivernum += 1
+        replace_line('Defaults.dat', 1, f'{nextdrivernum}\n')
+        break
+# def RevenueMenu():
 
 # Menu setup
 '''
@@ -29,7 +38,7 @@ def menu():
     print(" 3. Company Expenses ")
     print(" 4. Track Car Rentals ")
     print(" 5. Record Employee Payment ")
-    print(" 6. Print Company Profit Listing ")
+    print(" 6. Print Company Pro  fit Listing ")
     print(" 7. Print Driver Financial Listing ")
     print(" 8. OurReport ")
     print(" 9. Quit Program. ")
@@ -61,16 +70,4 @@ def menu():
         else:
             print('Please enter a valid choice')
 '''
-def NewEmpMenu():
-    while True:
-        global defaultlines,defaultread,transnum,nextdrivernum,MONTHSTANDFEE,DAILYFEE,WEEKLYFEE,HST_RATE
-        empfileread = open('employees.dat', 'a')
-        drivernum = nextdrivernum
-        nextdrivernum += 1
-        replace_line('Defaults.dat', 1, f'{nextdrivernum}\n')
-        break
-
-
-
-
 NewEmpMenu()
