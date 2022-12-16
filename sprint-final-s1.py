@@ -1,3 +1,4 @@
+# Opening files & setting globals
 global transnum,nextdrivernum,MONTHSTANDFEE,DAILYFEE,WEEKLYFEE,HST_RATE
 defaultread = open('Defaults.dat')
 defaultlines = defaultread.readlines()
@@ -70,4 +71,3 @@ def menu():
         else:
             print('Please enter a valid choice')
 '''
-NewEmpMenu()
