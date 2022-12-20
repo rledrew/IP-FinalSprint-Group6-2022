@@ -1,7 +1,5 @@
 # Importing Libraries
 from functions import replace_line
-from functions import namevalidate
-import datetime
 import datetime as dtime
 # Setting Date variables
 tday = dtime.date.today()
@@ -32,29 +30,95 @@ def NewEmpMenu():
     nextdrivernum += 1
     replace_line('Defaults.dat', 1, f'{nextdrivernum}\n')
     while True:
-        firstname = input('Enter employee first name here: ')
+        firstname = input('Enter employee first name here: ').title()
         if firstname.isalpha() == False:
             print('Please input a valid name')
         else:
             break
     while True:
-        lastname = input('Enter employee last name here: ')
+        lastname = input('Enter employee last name here: ').title()
         if lastname.isalpha() == False:
             print('Please input a valid name')
         else:
             break
 
-    empaddress = input('Enter employee address here(## Street, City): ')
+    empaddress = input('Enter employee address here(## Street, City): ').title()
     while True:
         empphone = input('Enter employee phone number here(###-###-####): ')
         empphone = empphone.replace(' ', '')
         empphone = empphone.replace('-', '')
         if empphone.isnumeric() == False:
             print('Phone number must contain only numbers and dashes')
+        elif len(empphone) != 10:
+            print('Phone number must be 10 digits long')
         else:
             break
+
     empphonedsp = f'{empphone[0]}{empphone[1]}{empphone[2]}-{empphone[3]}{empphone[4]}{empphone[5]}' \
                       f'-{empphone[6]}{empphone[7]}{empphone[8]}{empphone[9]}'
+
+    while True:
+        licnum = input('Enter employee license plate number here: ').upper()
+        licnum = licnum.replace(' ', '')
+        licnum = licnum.replace('-', '')
+
+        if licnum[0].isalpha() == False or licnum[1].isalpha() == False or licnum[2].isalpha() == False:
+            print('First 3 characters of license plate must be alphabetical')
+        elif licnum[3].isdigit() == False or licnum[4].isdigit() == False or licnum[5].isdigit() == False:
+            print('Last 3 characters of license plate must be numerical')
+        elif len(licnum) != 6:
+            print('Plate number must be 6 characters long')
+        else:
+            break
+    licnumdsp = f'{licnum[0]}{licnum[1]}{licnum[2]} {licnum[3]}{licnum[4]}{licnum[5]}'
+
+    while True:
+        licexp = input('Enter employee license expiration date(MM/YY): ')
+        licexp = licexp.replace(' ', '')
+        licexp = licexp.replace('/', '')
+        licexp = licexp.replace('-', '')
+        if len(licexp) != 4:
+            print('License expiry must contain 4 digits (MM/YY)')
+        if licexp.isdigit() == False:
+            print('License expiry date must only contain numbers (MM/YY)')
+        else:
+            break
+
+    licensedateformat = '%m%y'
+    licedate = dtime.datetime.strptime(licexp, licensedateformat)
+    while True:
+        polcomp = input("Enter the name of the insurance company with whom the employee has a policy: ")
+        polcompval = polcomp.replace(' ', '')
+        if polcompval.isalpha() == False:
+            print('Company name must only contain letters')
+        else:
+            break
+    while True:
+        polnum = input('Enter employee insurance policy number here: ')
+        polnum = polnum.replace(' ','')
+        if polnum.isdigit() == False:
+            print('Policy Number must contain only numbers')
+        else:
+            break
+    while True:
+        carinq = input('Will the employee be renting a car?(Y/N): ').upper()
+        if carinq[0] == 'Y':
+            carinq = 'Y'
+            break
+        elif carinq[0] == 'N':
+            carinq = 'N'
+            break
+        else:
+            print('Please enter a valid input')
+    while True:
+        baldue = input('Enter employee balance due here: ')
+        balval = baldue.replace('.', '')
+        if balval.isnumeric() == False:
+            print('Please enter only numbers and periods for the balance')
+        else:
+            break
+    empfileread.write(f'\n{driver_num}, {firstname} {lastname}, {empaddress}, {empphone}, {licnumdsp}, {licexp},'
+                      f' {polcomp}, {polnum}, {carinq}, {baldue}')
 
 
 
