@@ -1,10 +1,12 @@
 # Importing Libraries
+global dtime
 from functions import replace_line
 import datetime as dtime
+
 # Setting Date variables
 tday = dtime.date.today()
 # Opening files & setting globals
-global transnum,nextdrivernum,MONTHSTANDFEE,DAILYFEE,WEEKLYFEE,HST_RATE
+global transnum, nextdrivernum, MONTHSTANDFEE, DAILYFEE, WEEKLYFEE, HST_RATE
 defaultread = open('Defaults.dat')
 defaultlines = defaultread.readlines()
 transnum = defaultlines[0]
@@ -39,7 +41,7 @@ if tday.day == 1 and tday != PreviousDate:
         newempbaldue = oldempbaldue + standfeetotal
         replace_line('employees.dat', counter, f'{employeelinelist[0]},{employeelinelist[1]},{employeelinelist[2]},\
 {employeelinelist[3]},{employeelinelist[4]},{employeelinelist[5]},{employeelinelist[6]},\
-{employeelinelist[7]},{employeelinelist[8]}, {newempbaldue}\n')
+{employeelinelist[7]},{employeelinelist[8]}, {newempbaldue:.2f}\n')
         transnum = int(transnum)
         transnum += 1
         transnum = str(transnum)
@@ -47,6 +49,8 @@ if tday.day == 1 and tday != PreviousDate:
         counter += 1
 if tday != PreviousDate:
     replace_line('Defaults.dat', 6, f'{tday}')
+
+
 # Functions
 
 def NewEmpMenu():
@@ -83,7 +87,7 @@ def NewEmpMenu():
                 break
 
         empphonedsp = f'{empphone[0]}{empphone[1]}{empphone[2]}-{empphone[3]}{empphone[4]}{empphone[5]}' \
-                          f'-{empphone[6]}{empphone[7]}{empphone[8]}{empphone[9]}'
+                      f'-{empphone[6]}{empphone[7]}{empphone[8]}{empphone[9]}'
 
         while True:
             licnum = input('Enter employee license plate number here: ').upper()
@@ -123,7 +127,7 @@ def NewEmpMenu():
                 break
         while True:
             polnum = input('Enter employee insurance policy number here: ')
-            polnum = polnum.replace(' ','')
+            polnum = polnum.replace(' ', '')
             if polnum.isdigit() == False:
                 print('Policy Number must contain only numbers')
             else:
@@ -161,28 +165,54 @@ def NewEmpMenu():
 
 def RevenueMenu():
     global transnum
-    revtransnum1 = transnum
-    transnum = int(transnum)
-    transnum += 1
-    transnum = str(transnum)
-    replace_line('Defaults.dat', 0, f'{transnum}\n')
-    dateformat = '%Y-%m-%d'
     while True:
-        transdate = input('Enter date of transaction here(YYYY-MM-DD): ')
-        transdateval = transdate.replace('-', '')
-        if transdateval.isdigit() == False:
-            print('Make sure date is in correct format (YYYYY-MM-DD)')
-        else:
+        revtransnum1 = transnum
+        transnum = int(transnum)
+        transnum += 1
+        transnum = str(transnum)
+        replace_line('Defaults.dat', 0, f'{transnum}\n')
+        dateformat = '%Y-%m-%d'
+        while True:
+            transdate = input('Enter date of transaction here(YYYY-MM-DD): ')
+            transdateval = transdate.replace('-', '')
+            if transdateval.isdigit() == False:
+                print('Make sure date is in correct format (YYYYY-MM-DD)')
+            else:
+                break
+        transdatestrptime = dtime.datetime.strptime(transdate, dateformat)
+        transdesc = input('Enter description of transaction here: ')
+        if len(transdesc) == 0:
+            transdesc = 'N/A'
+        while True:
+            drivernum = input('Enter Driver number here: ')
+            if drivernum.isnumeric() == False:
+                print('Driver number must contain only numbers')
+            else:
+                break
+        while True:
+            transamt = input('Enter transaction amount here: ')
+            transamt = transamt.replace('$', '')
+            transval = transamt.replace('.', '')
+            if transval.isnumeric() == False:
+                print('Please enter a valid dollar amount (##.##)')
+            else:
+                break
+        transamt = float(transamt)
+        revhst = transamt * HST_RATE
+        revtotal = transamt + revhst
+        revopen = open('revenue.dat', 'a')
+        revtransnum1 = revtransnum1.replace('\n', '')
+        revopen.write(f'{revtransnum1}, {transdate}, {transdesc}, {drivernum}, {transamt:.2f}, {revhst:.2f}, {revtotal:.2f}\n')
+        while True:
+            selection = input('Would you like to return to main menu?(Y/N): ').upper()
+            if selection != 'Y' and selection != 'N':
+                print('Please enter a valid input')
+            else:
+                break
+        if selection == 'Y':
             break
-    transdatestrptime = dtime.date.strptime(transdate, dateformat)
-    transdesc = input('Enter descript of transaction here: ')
-    drivernum = input('Enter Driver number here: ')
-
-
-
-
-
-
+        elif selection == 'N':
+            pass
 
 '''
 # Menu setup
