@@ -1,3 +1,4 @@
+'''
 import datetime
 while True:
     licnum = input('Enter employee license number here: ').upper()
@@ -25,3 +26,8 @@ while True:
 licensedateformat = '%m%y'
 licedate = datetime.datetime.strptime(licexp, licensedateformat)
 print(licedate)
+'''''
+expopen = open('expenses.dat', 'a')
+            exptransnum = exptransnum.replace('\n', '')
+            expopen.write(
+                f'{exptransnum}, {transdate}, {drivernum}, {itemnum}, {itemdesc}, {itemcost:.2f}, {itemquan}, \n')

@@ -52,6 +52,21 @@ if tday != PreviousDate:
 
 
 # Functions
+def reprint():
+    print()
+    print("HAB Taxi Services")
+    print("Company Services System")
+    print()
+    print(" 1. Enter a New Employee (Drive) ")
+    print(" 2. Enter Company Revenues ")
+    print(" 3. Company Expenses ")
+    print(" 4. Track Car Rentals ")
+    print(" 5. Record Employee Payment ")
+    print(" 6. Print Company Profit Listing ")
+    print(" 7. Print Driver Financial Listing ")
+    print(" 8. Employee Income Report")
+    print(" 9. Quit Program. ")
+    print()
 
 def NewEmpMenu():
     global nextdrivernum
@@ -158,6 +173,7 @@ def NewEmpMenu():
             else:
                 break
         if selection == 'Y':
+            reprint()
             break
         elif selection == 'N':
             pass
@@ -210,11 +226,192 @@ def RevenueMenu():
             else:
                 break
         if selection == 'Y':
+            reprint()
             break
         elif selection == 'N':
             pass
-
 '''
+def ExpensesMenu():
+    global transnum
+    expcounter = 0
+    itemnum = []
+    while True:
+        exptransnum = transnum
+        exptransnum = exptransnum.replace('\n', '')
+        transnum = int(transnum)
+        transnum += 1
+        transnum = str(transnum)
+        replace_line('Defaults.dat', 0, f'{transnum}\n')
+        dateformat = '%Y-%m-%d'
+        while True:
+            expcounter += 1
+            itemnumlist = []
+            itemdesclist = []
+            itemcostlist = []
+            itemquanlist = []
+            while True:
+                transdate = input('Enter date of transaction here(YYYY-MM-DD): ')
+                transdateval = transdate.replace('-', '')
+                if transdateval.isdigit() == False:
+                    print('Make sure date is in correct format (YYYYY-MM-DD)')
+                else:
+                    break
+            while True:
+                drivernum = input('Enter Driver number here: ')
+                if drivernum.isnumeric() == False:
+                    print('Driver number must contain only numbers')
+                else:
+                    break
+            while True:
+                itemnum = input('Enter the item number here: ')
+
+                if itemnum.isdigit() == False:
+                    print('Item number must be numeric value')
+                else:
+                    itemnumlist.append(itemnum)
+                    break
+            while True:
+                itemdesc = input('Enter the item description here: ')
+                if len(itemdesc) < 5:
+                    print('Item description must be longer than 5 chars')
+                else:
+                    itemdesclist.append(itemdesc)
+                    break
+            while True:
+                itemcost = input('Enter the item cost here: ')
+                if itemcost.isdecimal() == False:
+                    print('Item cost must be valid dollar amount')
+                else:
+                    itemcostlist.append(itemcost)
+                    break
+            while True:
+                itemquan = input('Enter the item quantity here: ')
+                if itemquan.isdigit() == False:
+                    print('Item quantity must be numeric value')
+                else:
+                    itemquanlist.append(itemquan)
+                    break
+            while True:
+                selection = input('Would you like to add another item to this invoice?(Y/N): ').upper()
+                if selection != 'Y' and selection != 'N':
+                    print('Please enter a valid input')
+                else:
+                    break
+            if selection == 'Y':
+                pass
+            elif selection == 'N':
+
+                while expcounter >= 0:
+                    witemnum = itemnumlist[expcounter]
+                    witemnum = str(witemnum)
+                    witemdesc = itemdesclist[expcounter]
+                    witemdesc = str(witemdesc)
+                    witemcost = itemcostlist[expcounter]
+                    witemcost = str(witemcost)
+                    witemquan = itemquanlist[expcounter]
+                    witemquan = str(witemquan)
+                    supread = open('expenses.dat')
+                    supread.write(f'{exptransnum}, {}')
+
+
+
+
+                break
+
+        while True:
+            selection1 = input('Would you like to return to main menu?(Y/N): ').upper()
+            if selection1 != 'Y' and selection1 != 'N':
+                print('Please enter a valid input')
+            else:
+                break
+        if selection1 == 'Y':
+            break
+        elif selection1 == 'N':
+            pass
+'''
+def ProfitListingMenu():
+    revopen = open('revenue.dat')
+    revunsorted = revopen.readlines()
+    revsorted = sorted(revunsorted)
+    expopen = open('expenses.dat')
+    expsorted = sorted(expopen)
+    header = 'HAB Taxi Services'
+    subheader = 'Company Profit Report'
+    tranheader = 'Transaction ID'
+    dateheader = 'Transaction Date'
+    descheader = 'Transaction Description'
+    driverheader = 'Driver Number'
+    amtheader = 'Transaction Subtotal'
+    hstheader = 'Transaction HST'
+    totalheader = 'Transaction Total'
+    with open(r"revenue.dat", 'r') as fp:
+        revreportctr = len(fp.readlines())
+    with open(r"expenses.dat", 'r') as fp:
+        expreportctr = len(fp.readlines())
+    print(f'{header:^143}')
+    print(f'{subheader:^143}')
+    print('=' * 143)
+    print()
+    print()
+    print()
+    print()
+    print(f'|Transaction Type|{tranheader}|{dateheader}|{descheader}|{driverheader}|{amtheader}|{hstheader}|{totalheader}|')
+    print('=' * 143)
+    revreportctr -= 1
+    expreportctr -= 1
+    while revreportctr > 0:
+        print(f'{revsorted[revreportctr]}')
+        revreportctr -= 1
+    while expreportctr > 0:
+        print(f'{revsorted[expreportctr]}')
+        expreportctr -= 1
+    slection = input('Enter any character to continue')
+    reprint()
+def ReportMenu():
+    empinc = open('employeepay.dat')
+    empincsorted =sorted(empinc)
+    header = 'HAB Taxi Services'
+    subheader = 'Employee Income Report'
+    with open(r"employeepay.dat", 'r') as fp:
+        empreportctr = len(fp.readlines())
+    print(f'{header:^52}')
+    print(f'{subheader:^52}')
+    print('=' * 52)
+    print()
+    print()
+    print('|Employee Num|Employee Gross|Employee Net|')
+    print('=' * 52)
+    empreportctr -= 1
+    while empreportctr > 0:
+        print(f'{empincsorted[empreportctr]}')
+        empreportctr -= 1
+    slection = input('Enter any character to continue')
+    reprint()
+
+
+def ExpensesMenu():
+    print('Not yet implemented')
+    selection = input('Enter any character to continue')
+    reprint()
+def RentalsMenu():
+    print('Not yet implemented')
+    selection = input('Enter any character to continue')
+    reprint()
+def EmpPaymentMenu():
+    print('Not yet implemented')
+    selection = input('Enter any character to continue')
+    reprint()
+def DriverFinanceMenu():
+    print('Not yet implemented')
+    selection = input('Enter any character to continue')
+    reprint()
+
+
+
+
+
+
+
 # Menu setup
 
 def menu():
@@ -227,9 +424,9 @@ def menu():
     print(" 3. Company Expenses ")
     print(" 4. Track Car Rentals ")
     print(" 5. Record Employee Payment ")
-    print(" 6. Print Company Pro  fit Listing ")
+    print(" 6. Print Company Profit Listing ")
     print(" 7. Print Driver Financial Listing ")
-    print(" 8. OurReport ")
+    print(" 8. Employee Income Report")
     print(" 9. Quit Program. ")
     print()
     while True:
@@ -258,4 +455,4 @@ def menu():
             break
         else:
             print('Please enter a valid choice')
-'''
+menu()
